@@ -12,6 +12,16 @@ This document provides a comprehensive index of all documentation available in t
 ### [CLAUDE.md](./CLAUDE.md)
 Instructions for Claude Code when working with this repository. Contains architecture insights, development patterns, and coding guidelines.
 
+### [DOCKER.md](./DOCKER.md)
+Complete Docker configuration guide including:
+- Service overview and ports
+- Docker commands reference
+- Dockerfile details (API + Frontend)
+- Hot-reload configuration
+- Networking and volumes
+- Troubleshooting
+- Production deployment
+
 ---
 
 ## 🔧 Backend (API) Documentation
@@ -81,7 +91,10 @@ Complete documentation for the React frontend including:
 
 ---
 
-## 🐳 Infrastructure
+## 🐳 Infrastructure & Docker
+
+### [DOCKER.md](./DOCKER.md)
+**Complete Docker guide** - Everything you need to know about the Docker setup.
 
 ### [docker-compose.yml](./docker-compose.yml)
 Docker Compose configuration for running:
@@ -89,12 +102,16 @@ Docker Compose configuration for running:
 - Keycloak identity provider
 - Adminer database UI
 - Keycloak PostgreSQL database
-- API (optional)
+- NestJS API (with hot-reload)
+- React Frontend (with HMR)
 
 **Quick commands:**
 ```bash
-# Start all services
+# Start all services (full stack)
 docker-compose up -d
+
+# Start only infrastructure
+docker-compose up -d mylegitech_postgres keycloak keycloak_postgres mylegitech_adminer
 
 # Stop all services
 docker-compose down
@@ -102,6 +119,8 @@ docker-compose down
 # View logs
 docker-compose logs -f [service-name]
 ```
+
+📖 **[Full Docker Documentation →](./DOCKER.md)**
 
 ---
 
@@ -210,7 +229,8 @@ Content...
 | **Keycloak Setup** | [app/README.md#-keycloak-integration](./app/README.md#-keycloak-integration) |
 | **API Reference** | [api/docs/api/](./api/docs/api/) or http://localhost:3000/swagger |
 | **Troubleshooting** | [api/docs/troubleshooting.md](./api/docs/troubleshooting.md) |
-| **Docker** | [docker-compose.yml](./docker-compose.yml) |
+| **Docker Guide** | [DOCKER.md](./DOCKER.md) |
+| **docker-compose.yml** | [docker-compose.yml](./docker-compose.yml) |
 
 ---
 

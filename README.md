@@ -91,72 +91,66 @@ Get the full stack running in 5 minutes:
 - npm 10+
 - Docker & Docker Compose
 
-### 1. Install Dependencies
+### Option 1: Full Stack with Docker (Recommended)
 
 ```bash
-# Install API dependencies
+# 1. Configure environment files
+# API
 cd api
-npm install
+cp .env.example .env
+# Edit .env if needed (defaults work for local dev)
 
-# Install frontend dependencies
+# Frontend (optional - defaults already set)
 cd ../app
-npm install
-```
+cp .env.example .env
+# Edit .env if you need custom Keycloak/API URLs
 
-### 2. Start Infrastructure
-
-From the project root:
-
-```bash
-# Start PostgreSQL, Keycloak, and Adminer
+# 2. Start all services (from project root)
+cd ..
 docker-compose up -d
 ```
 
-This starts:
+This starts **everything**:
 - **PostgreSQL** (port 5432) - Main database
 - **Keycloak** (port 8090) - Identity provider
 - **Adminer** (port 8080) - Database UI
+- **API** (port 3000) - NestJS backend with hot-reload
+- **Frontend** (port 5173) - React app with HMR
 - **Keycloak PostgreSQL** - Separate Keycloak database
 
-### 3. Configure Environment
-
-```bash
-# Configure API
-cd api
-cp .env.example .env
-# Edit .env with your settings (default values work for local dev)
-
-# Configure Frontend (if needed)
-cd ../app
-# Create .env.local with Keycloak settings
-```
-
-### 4. Setup Database
-
-```bash
-cd api
-npm run typeorm:migration:run
-```
-
-### 5. Start Development Servers
-
-```bash
-# Terminal 1 - Start API (from api/)
-cd api
-npm run start:dev
-
-# Terminal 2 - Start Frontend (from app/)
-cd app
-npm run dev
-```
-
-### 6. Access the Application
-
-- **Frontend**: http://localhost:5173 (or port shown by Vite)
+**Access the application:**
+- **Frontend**: http://localhost:5173
 - **API**: http://localhost:3000/api
-- **Swagger Docs**: http://localhost:3000/swagger
+- **Swagger**: http://localhost:3000/swagger
 - **Keycloak Admin**: http://localhost:8090 (admin / password)
 - **Adminer**: http://localhost:8080
+
+### Option 2: Manual Development (Without Docker for App)
+
+If you prefer to run frontend/backend manually:
+
+```bash
+# 1. Install dependencies
+cd api && npm install
+cd ../app && npm install
+
+# 2. Start infrastructure only (from root)
+docker-compose up -d mylegitech_postgres keycloak keycloak_postgres mylegitech_adminer
+
+# 3. Configure environment
+cd api
+cp .env.example .env
+
+# 4. Run migrations
+npm run typeorm:migration:run
+
+# 5. Start services in separate terminals
+# Terminal 1 - API
+cd api && npm run start:dev
+
+# Terminal 2 - Frontend
+cd app && npm run dev
+```
 
 ---
 
@@ -197,6 +191,11 @@ npm run dev
 
 ## 📚 Documentation
 
+### General Documentation
+- **[DOCS.md](./DOCS.md)** - Complete documentation index
+- **[DOCKER.md](./DOCKER.md)** - Docker configuration guide
+- **[CLAUDE.md](./CLAUDE.md)** - Development guidelines for Claude Code
+
 ### Backend (API)
 
 Complete documentation is available in [`api/docs/`](./api/docs/):
@@ -214,6 +213,8 @@ Complete documentation is available in [`api/docs/`](./api/docs/):
 Frontend documentation is available in [`app/`](./app/):
 
 - **[Frontend README](./app/README.md)** - React app setup and development
+
+📖 **[Browse All Documentation →](./DOCS.md)**
 
 ---
 
@@ -295,21 +296,36 @@ npm run lint
 ### Docker Management
 
 ```bash
-# From project root or api/ directory
+# From project root
 
-# Start all services
+# Start all services (API + Frontend + Infrastructure)
 docker-compose up -d
-# or from api/: npm run docker:up
+
+# Start only infrastructure (for manual dev)
+docker-compose up -d mylegitech_postgres keycloak keycloak_postgres mylegitech_adminer
 
 # Stop all services
 docker-compose down
-# or from api/: npm run docker:down
 
-# View logs
+# View logs for all services
 docker-compose logs -f
 
+# View logs for specific service
+docker-compose logs -f mylegitech_app
+docker-compose logs -f mylegitech_api
+
 # Restart a service
-docker-compose restart mylegitech_postgres
+docker-compose restart mylegitech_app
+
+# Rebuild a service after code changes
+docker-compose build mylegitech_app
+docker-compose up -d mylegitech_app
+```
+
+**From `api/` directory:**
+```bash
+npm run docker:up    # Starts all services
+npm run docker:down  # Stops all services
 ```
 
 ---
@@ -346,14 +362,17 @@ REFRESH_TOKEN_EXPIRATION=30d
 
 ### Frontend Environment Variables
 
-Create `app/.env.local`:
+The frontend uses `app/.env` for configuration (already created with defaults):
 
 ```env
 VITE_KEYCLOAK_URL=http://localhost:8090
 VITE_KEYCLOAK_REALM=mylegitech
 VITE_KEYCLOAK_CLIENT_ID=mylegitech-frontend
 VITE_API_URL=http://localhost:3000/api
+NODE_ENV=development
 ```
+
+**Customization**: Copy `app/.env.example` to `app/.env` and edit if needed.
 
 ---
 

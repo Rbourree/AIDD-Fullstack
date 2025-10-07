@@ -57,7 +57,10 @@ When starting Docker services, the following containers are launched:
   - Default credentials: admin / password
 - **Adminer** (port 8080) - Database management UI
 - **Keycloak PostgreSQL** - Separate database for Keycloak
-- **API** (port 3000) - NestJS application (optional, if using docker-compose for full stack)
+- **API** (port 3000) - NestJS application with hot-reload
+- **Frontend App** (port 5173) - React/Vite application with HMR
+
+**Full Stack Development**: Running `docker-compose up -d` starts all services including frontend and backend with hot-reload enabled.
 
 ## Working with the Frontend
 
@@ -238,4 +241,14 @@ Environment variables configured in `api/.env` (see `api/.env.example`):
 
 ### Frontend Environment Variables
 
-The frontend requires Keycloak configuration to match the API realm settings. Vite environment variables should be configured for the Keycloak client.
+Environment variables configured in `app/.env` (see `app/.env.example`):
+
+- **Keycloak**: URL, realm, and client ID
+- **API**: Backend API base URL
+- **Node Environment**: Development or production mode
+
+**Note**: The `.env` file is already created with default values for local development. Copy from `.env.example` if needed:
+```bash
+cd app
+cp .env.example .env
+```

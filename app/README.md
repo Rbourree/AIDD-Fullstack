@@ -8,27 +8,54 @@ This is the React frontend for the multi-tenant boilerplate, built with **React 
 
 - Node.js 22+
 - npm 10+
-- Running backend API (see [../api/README.md](../api/README.md))
-- Running Keycloak instance (via `docker-compose up -d` from project root)
+- Docker & Docker Compose (for infrastructure)
 
-### Installation
+### Option 1: Docker (Recommended)
+
+From the **project root**:
+
+```bash
+# Start everything (API + Frontend + Infrastructure)
+docker-compose up -d
+```
+
+The app will be available at http://localhost:5173 with hot-reload enabled.
+
+### Option 2: Manual Development
+
+#### Installation
 
 ```bash
 npm install
 ```
 
-### Configuration
+#### Configuration
 
-Create `.env.local` file:
+Environment variables are already configured in `.env` with default values for local development.
 
-```env
-VITE_KEYCLOAK_URL=http://localhost:8090
-VITE_KEYCLOAK_REALM=mylegitech
-VITE_KEYCLOAK_CLIENT_ID=mylegitech-frontend
-VITE_API_URL=http://localhost:3000/api
+If you need to customize them:
+
+```bash
+# Copy example file (already done by default)
+cp .env.example .env
+
+# Edit .env with your values
+# VITE_KEYCLOAK_URL=http://localhost:8090
+# VITE_KEYCLOAK_REALM=mylegitech
+# VITE_KEYCLOAK_CLIENT_ID=mylegitech-frontend
+# VITE_API_URL=http://localhost:3000/api
 ```
 
-### Development
+**Note**: You can also create `.env.local` for local overrides (not committed to git).
+
+#### Start Infrastructure
+
+From project root:
+```bash
+docker-compose up -d mylegitech_postgres keycloak keycloak_postgres mylegitech_adminer
+```
+
+#### Development
 
 ```bash
 # Start dev server with hot-reload
