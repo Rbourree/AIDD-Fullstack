@@ -4,10 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Structure
 
-This is a NestJS multi-tenant API boilerplate. The main codebase is in the `api/` directory.
+This is a full-stack multi-tenant boilerplate with NestJS backend and React frontend.
 
-- `api/` - NestJS backend API with multi-tenant architecture
-- `app/` - Reserved for future frontend application (currently empty)
+- `api/` - NestJS backend API with multi-tenant architecture and Keycloak authentication
+- `app/` - React frontend application with Vite (includes Keycloak integration)
 
 ## Working with the API
 
@@ -22,7 +22,7 @@ cd api
 ```bash
 # Install and setup
 npm install
-npm run docker:up              # Start PostgreSQL
+npm run docker:up              # Start PostgreSQL, Keycloak, and Adminer
 npm run typeorm:migration:run  # Apply migrations
 
 # Development
@@ -37,7 +37,54 @@ npm run typeorm:migration:revert
 # Code quality
 npm run lint                   # ESLint with auto-fix
 npm run format                 # Prettier formatting
+
+# Docker services
+npm run docker:up              # Start all services (PostgreSQL, Keycloak, Adminer)
+npm run docker:down            # Stop all services
 ```
+
+### Docker Services
+
+The `docker-compose.yml` file is located at the **project root**. You can run it from anywhere:
+- From `api/` directory: `npm run docker:up` or `npm run docker:down`
+- From project root: `docker-compose up -d` or `docker-compose down`
+
+When starting Docker services, the following containers are launched:
+
+- **PostgreSQL** (port 5432) - Main application database
+- **Keycloak** (port 8090) - Identity and access management
+  - Admin console: http://localhost:8090
+  - Default credentials: admin / password
+- **Adminer** (port 8080) - Database management UI
+- **Keycloak PostgreSQL** - Separate database for Keycloak
+- **API** (port 3000) - NestJS application (optional, if using docker-compose for full stack)
+
+## Working with the Frontend
+
+All frontend commands should be run from the `app/` directory:
+
+```bash
+cd app
+```
+
+### Frontend Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Development
+npm run dev                    # Start Vite dev server with HMR
+
+# Build
+npm run build                  # Build for production
+
+# Code quality
+npm run lint                   # ESLint
+npm run preview                # Preview production build
+```
+
+The frontend is built with React 19 + Vite and includes Keycloak integration via `@react-keycloak/web`.
 
 ## Architecture Overview
 
@@ -145,19 +192,50 @@ findByTenant(tenantId: string, options?: FindOptions) {
 - keycloakId populated on first login via Keycloak
 - Internal ID used for all database relations (stable across identity provider changes)
 
+### Keycloak Integration
+
+The application uses Keycloak as the identity provider:
+
+- Users authenticate via Keycloak SSO
+- JWT tokens from Keycloak are validated by the API
+- User data is synchronized from Keycloak to local database on login
+- `keycloakId` field links local users to Keycloak users
+- First-time login auto-creates tenant if not specified in token
+
+**Keycloak Configuration**:
+- Realm, client ID, and JWKS URI configured in `.env`
+- JWT validation uses JWKS endpoint for public key retrieval
+- Both frontend and API must be configured with same Keycloak realm/client
+
+## Documentation Structure
+
+- **[README.md](./README.md)** (root) - Full-stack overview, quick start, and general documentation
+- **[api/README.md](./api/README.md)** - Comprehensive backend API documentation
+- **[api/docs/](./api/docs/)** - Detailed API documentation (architecture, guides, API reference)
+- **[app/README.md](./app/README.md)** - React frontend documentation and setup
+- **CLAUDE.md** (this file) - Instructions for Claude Code
+
 ## Development Workflow
 
-1. **Adding features**: Create module with full layered structure (controller → service → repository)
-2. **Database changes**: Generate TypeORM migration with `npm run typeorm:migration:generate`
-3. **Testing endpoints**: Swagger UI available at http://localhost:3000/swagger
-4. **Pre-commit**: Husky runs ESLint and Prettier via lint-staged
+1. **Starting development**: Run `docker-compose up -d` from root (or `npm run docker:up` from `api/`)
+2. **Adding features**: Create module with full layered structure (controller → service → repository)
+3. **Database changes**: Generate TypeORM migration with `npm run typeorm:migration:generate`
+4. **Testing endpoints**: Swagger UI available at http://localhost:3000/swagger
+5. **Pre-commit**: Husky runs ESLint and Prettier via lint-staged (API only)
 
 ## Configuration
 
+### API Environment Variables
+
 Environment variables configured in `api/.env` (see `api/.env.example`):
 
-- Database connection (PostgreSQL)
-- JWT secrets and expiration
-- External service API keys (Mailjet, Yousign, AR24)
-- Sentry DSN for error tracking
-- Rate limiting thresholds
+- **Database**: PostgreSQL connection settings
+- **JWT**: Secrets and token expiration times
+- **Keycloak**: Realm, auth server URL, client ID/secret, JWKS URI
+- **External Services**: Mailjet (email), Yousign (e-signatures), AR24 (registered mail)
+- **Monitoring**: Sentry DSN for error tracking
+- **Security**: CORS origin, rate limiting thresholds
+
+### Frontend Environment Variables
+
+The frontend requires Keycloak configuration to match the API realm settings. Vite environment variables should be configured for the Keycloak client.

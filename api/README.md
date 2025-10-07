@@ -2,16 +2,19 @@
 
 # 🚀 NestJS Multi-Tenant API Boilerplate
 
+> **Part of the Full-Stack Multi-Tenant Boilerplate** - [View Full Project](../README.md)
+
 <p align="center">
   <img src="https://img.shields.io/badge/NestJS-10.0-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
   <img src="https://img.shields.io/badge/TypeScript-5.1-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/TypeORM-0.3-FF6C37?style=for-the-badge&logo=typeorm&logoColor=white" alt="TypeORM" />
+  <img src="https://img.shields.io/badge/Keycloak-26-4D4D4D?style=for-the-badge&logo=keycloak&logoColor=white" alt="Keycloak" />
   <img src="https://img.shields.io/badge/PostgreSQL-15+-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
 </p>
 
 <p align="center">
-  <strong>A production-ready NestJS boilerplate with multi-tenant architecture, comprehensive security, and enterprise-grade integrations</strong>
+  <strong>A production-ready NestJS boilerplate with Keycloak SSO, multi-tenant architecture, comprehensive security, and enterprise-grade integrations</strong>
 </p>
 
 <p align="center">
@@ -38,10 +41,10 @@
 - Automatic data filtering per tenant
 
 ### 🔐 Security & Authentication
-- JWT authentication with refresh tokens
-- Bcrypt password hashing (12 rounds)
-- Refresh token revocation system
-- Strong password validation
+- **Keycloak SSO** - Enterprise identity management
+- JWT authentication with Keycloak token validation
+- Refresh token system (revocable)
+- User synchronization from Keycloak
 - Rate limiting (global + auth-specific)
 - Helmet security headers
 - CORS configuration

@@ -21,8 +21,8 @@
     "typeorm:migration:generate": "npm run typeorm -- migration:generate src/database/migrations/init",
     "typeorm:migration:run": "npm run typeorm -- migration:run",
     "typeorm:migration:revert": "npm run typeorm -- migration:revert",
-    "docker:up": "docker-compose up -d",
-    "docker:down": "docker-compose down",
+    "docker:up": "cd .. && docker-compose up -d",
+    "docker:down": "cd .. && docker-compose down",
     "prepare": "husky install"
   },
   "dependencies": {

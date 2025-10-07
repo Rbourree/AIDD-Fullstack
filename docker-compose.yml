@@ -2,7 +2,7 @@ services:
 
   mylegitech_api:
     build:
-      context: .
+      context: ./api
       dockerfile: Dockerfile
       target: development
     container_name: mylegitech-api
@@ -10,13 +10,13 @@ services:
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
     env_file:
-      - .env
+      - ./api/.env
     depends_on:
       mylegitech_postgres:
         condition: service_healthy
     volumes:
-      - ./src:/app/src
-    command: sh -c "npx prisma migrate deploy && npm run start:dev"
+      - ./api/src:/app/src
+    command: sh -c "npm run typeorm:migration:run && npm run start:dev"
 
   mylegitech_postgres:
     image: postgres:15-alpine
