@@ -1,7 +1,7 @@
 services:
 
   mylegitech_api:
-    container_name: mylegitech-api
+    container_name: mylegitech_api
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -21,7 +21,7 @@ services:
       - mylegitech-network
 
   mylegitech_app:
-    container_name: mylegitech-app
+    container_name: mylegitech_app
     build:
       context: ./app
       dockerfile: Dockerfile
@@ -40,7 +40,7 @@ services:
       - mylegitech-network
 
   mylegitech_postgres:
-    container_name: mylegitech-postgres
+    container_name: mylegitech_postgres
     image: postgres:15-alpine
     restart: always
     environment:
@@ -67,6 +67,16 @@ services:
       - "8080:8080"
     depends_on:
       - mylegitech_postgres
+    networks:
+      - mylegitech-network
+
+  mylegitech_redoc:
+    container_name: mylegitech_redoc
+    image: redocly/redoc
+    ports:
+      - "8020:80"
+    environment:
+      SPEC_URL: http://localhost:3000/openapi.json
     networks:
       - mylegitech-network
 

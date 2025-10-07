@@ -16,7 +16,6 @@ export const typeOrmConfig: DataSourceOptions = {
   logging: ["error"],
   ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : false,
 };
-console.log(typeOrmConfig)
 
 // DataSource pour les migrations TypeORM CLI
 export const AppDataSource = new DataSource(typeOrmConfig);

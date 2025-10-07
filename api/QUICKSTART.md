@@ -55,7 +55,7 @@ The application will be available at `http://localhost:3000` with Swagger docume
 Use the registration endpoint to bootstrap a tenant and owner account in a single request. When no `tenantId` is provided the API creates a new workspace automatically.
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/auth/register \
+curl -X POST http://localhost:3000/auth/register \
   -H "Content-Type: application/json" \
   -d '{
         "email": "owner@example.com",
@@ -70,13 +70,13 @@ The response contains access and refresh tokens with the tenant context embedded
 ### Try It Out in Swagger
 
 1. Open http://localhost:3000/swagger
-2. Authenticate with `POST /v1/auth/login` or the token from registration
+2. Authenticate with `POST /auth/login` or the token from registration
 3. Click **Authorize** and paste `Bearer YOUR_ACCESS_TOKEN`
-4. Call tenant-scoped endpoints such as `GET /v1/items`
+4. Call tenant-scoped endpoints such as `GET /items`
 
 ## 📍 Important URLs
 
-- **API Base**: http://localhost:3000/api
+- **API Base**: http://localhost:3000
 - **Swagger Docs**: http://localhost:3000/swagger
 - **Health Check**: http://localhost:3000/health
 

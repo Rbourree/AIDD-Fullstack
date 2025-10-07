@@ -88,13 +88,13 @@ npm run typeorm:migration:run
 
 ```bash
 # Refresh your token
-POST /v1/auth/refresh
+POST /auth/refresh
 {
   "refreshToken": "your_refresh_token"
 }
 
 # Login again
-POST /v1/auth/login
+POST /auth/login
 {
   "email": "user@example.com",
   "password": "Password123!"
@@ -132,7 +132,7 @@ cat .env | grep JWT_SECRET
 Use the refresh endpoint:
 
 ```bash
-POST /v1/auth/refresh
+POST /auth/refresh
 {
   "refreshToken": "your_refresh_token"
 }

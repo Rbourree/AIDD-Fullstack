@@ -105,14 +105,27 @@ The API implements complete tenant isolation:
 2. Always filter repository queries by the active tenant ID
 3. Protect routes with `@UseGuards(JwtAuthGuard, TenantRoleGuard)` and `@Roles()` decorators
 
-### Authentication Flow
+### Authentication Flow - Pure Keycloak Architecture
+
+**⚠️ IMPORTANT: This API does NOT generate JWT tokens. Only Keycloak does.**
 
 - **Keycloak-only authentication** - Users authenticate via Keycloak SSO
+- **Token generation**: 100% handled by Keycloak (access + refresh tokens)
+- **Token validation**: API validates Keycloak JWTs using JWKS endpoint
+- **Token refresh**: Handled by Keycloak's token refresh endpoint (not by API)
 - User records synchronized from Keycloak JWT tokens to local database
-- Refresh tokens stored in `refresh_tokens` table (for API sessions)
-- JWT strategy validates Keycloak tokens and syncs user data
+- `KeycloakJwtStrategy` validates tokens and syncs user data
 - Auto-tenant creation for new Keycloak users (if no tenant specified in token)
 - No password storage - authentication fully delegated to Keycloak
+
+**Authentication Endpoints**:
+- `POST /auth/accept-invitation` - Accept tenant invitation (no token generation)
+- `POST /auth/reset-password` - Trigger Keycloak password reset email
+- `GET /auth/me` - Get current user (requires Keycloak JWT)
+
+**No longer available** (removed in pure Keycloak architecture):
+- ~~`POST /auth/refresh`~~ - Use Keycloak's refresh token endpoint
+- ~~`POST /auth/logout`~~ - Use Keycloak's logout endpoint
 
 ### External Integrations
 
@@ -233,11 +246,12 @@ The application uses Keycloak as the identity provider:
 Environment variables configured in `api/.env` (see `api/.env.example`):
 
 - **Database**: PostgreSQL connection settings
-- **JWT**: Secrets and token expiration times
 - **Keycloak**: Realm, auth server URL, client ID/secret, JWKS URI
 - **External Services**: Mailjet (email), Yousign (e-signatures), AR24 (registered mail)
 - **Monitoring**: Sentry DSN for error tracking
 - **Security**: CORS origin, rate limiting thresholds
+
+**Note**: JWT secrets are NOT needed - Keycloak handles all token operations.
 
 ### Frontend Environment Variables
 

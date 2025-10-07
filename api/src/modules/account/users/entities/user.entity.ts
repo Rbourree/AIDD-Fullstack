@@ -9,7 +9,6 @@ import {
 import { TenantRole } from '@modules/account/enums/tenant-role.enum';
 import { TenantUser } from '@modules/account/tenants/entities/tenant-user.entity';
 import { Invitation } from '@modules/account/invitations/entities/invitation.entity';
-import { RefreshToken } from '@modules/auth/entities/refresh-token.entity';
 
 @Entity('users')
 export class User {
@@ -40,9 +39,6 @@ export class User {
 
   @OneToMany(() => Invitation, (invitation) => invitation.inviter)
   invitations: Invitation[];
-
-  @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
-  refreshTokens: RefreshToken[];
 
   constructor(partial?: Partial<User>) {
     if (partial) {

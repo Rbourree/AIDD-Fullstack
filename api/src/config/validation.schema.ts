@@ -9,12 +9,6 @@ export const validationSchema = Joi.object({
   DATABASE_NAME: Joi.string().required(),
   DATABASE_SSL: Joi.string().valid('true', 'false').default('false'),
 
-  // JWT
-  JWT_SECRET: Joi.string().required(),
-  JWT_EXPIRATION: Joi.string().default('7d'),
-  REFRESH_TOKEN_SECRET: Joi.string().required(),
-  REFRESH_TOKEN_EXPIRATION: Joi.string().default('30d'),
-
   // Application
   PORT: Joi.number().default(3000),
   NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
@@ -37,4 +31,11 @@ export const validationSchema = Joi.object({
   AR24_TOKEN: Joi.string().allow(''),
   AR24_PRIVATE_KEY: Joi.string().allow(''),
   AR24_ENVIRONMENT: Joi.string().valid('sandbox', 'production').default('sandbox'),
+
+  // Keycloak (Identity and Access Management)
+  KEYCLOAK_REALM: Joi.string().required(),
+  KEYCLOAK_AUTH_SERVER_URL: Joi.string().uri().required(),
+  KEYCLOAK_CLIENT_ID: Joi.string().required(),
+  KEYCLOAK_CLIENT_SECRET: Joi.string().required(),
+  KEYCLOAK_JWKS_URI: Joi.string().uri().required(),
 });

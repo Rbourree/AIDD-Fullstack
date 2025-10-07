@@ -38,7 +38,7 @@ All entities registered in `src/config/typeorm.config.ts` will be synced via mig
 npm run start:dev
 ```
 
-- API base URL: `http://localhost:3000/api`
+- API base URL: `http://localhost:3000`
 - Swagger UI: `http://localhost:3000/swagger`
 - Health check: `http://localhost:3000/health`
 
@@ -47,7 +47,7 @@ npm run start:dev
 Send a request to create a user and tenant in one step. Leaving `tenantId` empty creates a brand new workspace automatically.
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/auth/register \
+curl -X POST http://localhost:3000/auth/register \
   -H "Content-Type: application/json" \
   -d '{
         "email": "owner@example.com",
@@ -57,7 +57,7 @@ curl -X POST http://localhost:3000/api/v1/auth/register \
       }'
 ```
 
-You can now log in with the same credentials using `POST /v1/auth/login`. The generated tenant will be named "Ada's Workspace" and can be updated later via the Tenants API.
+You can now log in with the same credentials using `POST /auth/login`. The generated tenant will be named "Ada's Workspace" and can be updated later via the Tenants API.
 
 ## Useful npm Scripts
 
@@ -73,6 +73,6 @@ You can now log in with the same credentials using `POST /v1/auth/login`. The ge
 
 - Keep `.env` in sync with your database credentials when running migrations.
 - Run `npm run typeorm:migration:generate` after changing entities to keep the schema consistent.
-- Swagger authentication requires a bearer token from `POST /v1/auth/login`.
+- Swagger authentication requires a bearer token from `POST /auth/login`.
 
 For a more in-depth walkthrough, check the [Installation Guide](./installation.md) and [First Steps](./first-steps.md).

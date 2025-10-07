@@ -55,7 +55,7 @@ export class TenantUser {
 
 - Stored in the JWT payload as `tenantId`
 - Determines which tenant all service queries operate against
-- Users switch tenants via `/v1/users/switch-tenant`
+- Users switch tenants via `/users/switch-tenant`
 
 ## JWT Payload
 
@@ -143,7 +143,7 @@ createInvitation() { /* ... */ }
 Users with multiple memberships can obtain a token for a different tenant.
 
 ```bash
-curl -X POST http://localhost:3000/api/v1/users/switch-tenant \
+curl -X POST http://localhost:3000/users/switch-tenant \
   -H "Authorization: Bearer <token>" \
   -d '{ "tenantId": "other-tenant-uuid" }'
 ```

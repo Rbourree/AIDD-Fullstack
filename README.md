@@ -96,17 +96,14 @@ Get the full stack running in 5 minutes:
 ```bash
 # 1. Configure environment files
 # API
-cd api
-cp .env.example .env
+cp api/.env.example api/.env
 # Edit .env if needed (defaults work for local dev)
 
 # Frontend (optional - defaults already set)
-cd ../app
-cp .env.example .env
+cp app/.env.example app/.env
 # Edit .env if you need custom Keycloak/API URLs
 
 # 2. Start all services (from project root)
-cd ..
 docker-compose up -d
 ```
 
@@ -120,8 +117,10 @@ This starts **everything**:
 
 **Access the application:**
 - **Frontend**: http://localhost:5173
-- **API**: http://localhost:3000/api
+- **API**: http://localhost:3000
 - **Swagger**: http://localhost:3000/swagger
+- **OpenAPI**: http://localhost:3000/openapi.json
+- **ReDoc**: http://localhost:8020
 - **Keycloak Admin**: http://localhost:8090 (admin / password)
 - **Adminer**: http://localhost:8080
 
@@ -351,11 +350,9 @@ KEYCLOAK_CLIENT_ID=mylegitech-api
 KEYCLOAK_CLIENT_SECRET=your-client-secret
 KEYCLOAK_JWKS_URI=http://localhost:8090/realms/mylegitech/protocol/openid-connect/certs
 
-# JWT (for refresh tokens)
-JWT_SECRET=your-super-secret-jwt-key
-JWT_EXPIRATION=7d
-REFRESH_TOKEN_SECRET=your-refresh-token-secret
-REFRESH_TOKEN_EXPIRATION=30d
+# NOTE: JWT tokens are managed by Keycloak, not the API
+# No JWT_SECRET or REFRESH_TOKEN_SECRET needed
+# All token operations handled by Keycloak
 ```
 
 📖 **[Complete Configuration Guide →](./api/docs/getting-started/configuration.md)**

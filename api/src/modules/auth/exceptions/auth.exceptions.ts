@@ -12,12 +12,6 @@ export class AuthUserHasNoTenantsException extends UnauthorizedException {
   }
 }
 
-export class AuthInvalidRefreshTokenException extends UnauthorizedException {
-  constructor() {
-    super('Invalid refresh token');
-  }
-}
-
 export class AuthUserAlreadyExistsException extends ConflictException {
   constructor(email: string) {
     super(`User with email '${email}' already exists`);

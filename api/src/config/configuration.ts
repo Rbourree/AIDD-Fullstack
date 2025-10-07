@@ -9,12 +9,7 @@ export default () => ({
     name: process.env.DATABASE_NAME,
     ssl: process.env.DATABASE_SSL === 'true',
   },
-  jwt: {
-    secret: process.env.JWT_SECRET,
-    expiresIn: process.env.JWT_EXPIRATION || '7d',
-    refreshSecret: process.env.REFRESH_TOKEN_SECRET,
-    refreshExpiresIn: process.env.REFRESH_TOKEN_EXPIRATION || '30d',
-  },
+  // JWT configuration removed - Keycloak handles all token operations
   cors: {
     origin: process.env.CORS_ORIGIN,
   },

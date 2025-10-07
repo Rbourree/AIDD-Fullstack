@@ -98,7 +98,7 @@ npm run start:dev
 You should see:
 
 ```
-🚀 Application is running on: http://localhost:3000/api
+🚀 Application is running on: http://localhost:3000
 📚 Swagger documentation: http://localhost:3000/swagger
 ```
 

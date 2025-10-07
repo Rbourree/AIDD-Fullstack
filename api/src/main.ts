@@ -12,6 +12,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+
   // Security
   app.use(helmet());
 
@@ -31,7 +32,7 @@ async function bootstrap() {
   );
 
   // Global Sentry interceptor for context enrichment
-  app.useGlobalInterceptors(new SentryInterceptor()); 
+  app.useGlobalInterceptors(new SentryInterceptor());
 
   // Global exception filter (captures errors in Sentry)
   app.useGlobalFilters(new HttpExceptionFilter());
@@ -39,9 +40,7 @@ async function bootstrap() {
   // Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('NestJS Multi-tenant API')
-    .setDescription(
-      'A complete multi-tenant API with authentication, invitations, and role-based access control',
-    )
+    .setDescription('A complete multi-tenant API with authentication, invitations, and role-based access control',)
     .setVersion('1.0')
     .addBearerAuth()
     .addTag('auth', 'Authentication endpoints')
@@ -53,6 +52,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/swagger', app, document);
+  app.getHttpAdapter().get('/openapi.json', (_req, res) => res.json(document));
+
 
   const port = configService.get('port');
   await app.listen(port);

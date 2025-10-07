@@ -4,7 +4,7 @@ Complete reference for the NestJS Multi-Tenant API endpoints.
 
 ## Base URL
 
-- **Local Development**: `http://localhost:3000/api`
+- **Local Development**: `http://localhost:3000`
 - **Production**: `https://your-domain.com/api`
 
 ## Interactive Documentation
@@ -233,16 +233,16 @@ See [Invitations API](./invitations.md)
 
 ```bash
 # Login
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"password123"}'
 
 # Get profile (with token)
-curl -X GET http://localhost:3000/api/users/me \
+curl -X GET http://localhost:3000/users/me \
   -H "Authorization: Bearer YOUR_TOKEN"
 
 # Create item
-curl -X POST http://localhost:3000/api/items \
+curl -X POST http://localhost:3000/items \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"name":"My Item","description":"Test"}'
@@ -252,7 +252,7 @@ curl -X POST http://localhost:3000/api/items \
 
 ```javascript
 // Login
-const response = await fetch('http://localhost:3000/api/auth/login', {
+const response = await fetch('http://localhost:3000/auth/login', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -266,7 +266,7 @@ const response = await fetch('http://localhost:3000/api/auth/login', {
 const { accessToken } = await response.json();
 
 // Get profile
-const profile = await fetch('http://localhost:3000/api/users/me', {
+const profile = await fetch('http://localhost:3000/users/me', {
   headers: {
     'Authorization': `Bearer ${accessToken}`,
   },

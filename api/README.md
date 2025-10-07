@@ -43,7 +43,7 @@
 ### 🔐 Security & Authentication
 - **Keycloak SSO** - Enterprise identity management
 - JWT authentication with Keycloak token validation
-- Refresh token system (revocable)
+- Token validation via Keycloak JWKS endpoint
 - User synchronization from Keycloak
 - Rate limiting (global + auth-specific)
 - Helmet security headers
@@ -96,7 +96,7 @@ npm run start:dev
 ```
 
 **Access**:
-- API: http://localhost:3000/api
+- API: http://localhost:3000
 - Swagger: http://localhost:3000/swagger
 - Health: http://localhost:3000/health
 
@@ -217,10 +217,10 @@ Every resource is scoped to a tenant:
 
 | Feature | Implementation |
 |---------|---------------|
-| Authentication | JWT with refresh tokens |
+| Authentication | Keycloak JWT validation (JWKS) |
 | Password Hashing | Bcrypt (12 rounds) |
 | Password Strength | 8+ chars, upper/lower/number/special |
-| Token Refresh | Database-backed, revocable |
+| Token Refresh | Keycloak refresh endpoint |
 | Rate Limiting | 100 req/min global, 5 req/min auth |
 | Tenant Validation | Checked on every request |
 | Error Tracking | Sentry integration |
@@ -251,7 +251,7 @@ Common issues and solutions:
 | Database connection failed | `npm run docker:up` |
 | Port 3000 in use | Change `PORT` in `.env` |
 | TypeORM CLI error | Check `.env` and rerun `npm run typeorm:migration:run` |
-| JWT errors | Refresh token or login again |
+| JWT errors | Get new token from Keycloak |
 | Migration failed | `npm run typeorm:migration:revert` |
 
 ➡️ **[Complete troubleshooting guide](./docs/troubleshooting.md)**
